@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:provider/provider.dart';
+import 'package:video_player_app/features/video-player-app/model/playlist_model.dart';
 
 import 'package:video_player_app/features/video-player-app/presentation/Utils/colors.dart';
 import 'package:video_player_app/features/video-player-app/presentation/Utils/icons.dart';
 import 'package:video_player_app/features/video-player-app/presentation/widgets/bold_text.dart';
 import 'package:video_player_app/features/video-player-app/presentation/widgets/regular_text.dart';
+import 'package:video_player_app/features/video-player-app/provider/playlist_provider.dart';
 
 import '../../../Utils/dimenstion.dart';
 
@@ -225,99 +229,127 @@ class AddToPlayListBottomSheet extends StatelessWidget {
       );
 }
 
-class CreateNewPlayListBottomSheet extends StatelessWidget {
+class CreateNewPlayListBottomSheet extends StatefulWidget {
   CreateNewPlayListBottomSheet({
     Key? key,
   }) : super(key: key);
 
   @override
+  State<CreateNewPlayListBottomSheet> createState() =>
+      _CreateNewPlayListBottomSheetState();
+}
+
+class _CreateNewPlayListBottomSheetState
+    extends State<CreateNewPlayListBottomSheet> {
+  TextEditingController _controller = TextEditingController();
+
+  @override
   Widget build(BuildContext context) {
-    return buildSheet();
+    return buildSheet(context: context);
   }
 
   List<String> iconsList = [AppIcons.add, AppIcons.star];
+
   List<String> _bgImgList = [AppIcons.bigrecSkyBlue, AppIcons.rectangleRed];
+
   List<Color> _iconColorList = [AppColors.deepPurpleColor, Colors.white];
+
   List<String> _namesList = [
     "Create a new PlayList",
     "My Top Track",
   ];
+
   List<String> _subtitleList = [
     "",
     "50 Songs",
   ];
 
-  Widget buildSheet({String? route}) => Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Padding(
-            padding: EdgeInsets.only(
-              top: Dimensions.width15,
-            ),
-            child: BoldText(
-              text: "Create New Playlist",
+  Widget buildSheet({String? route, required BuildContext context}) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Padding(
+          padding: EdgeInsets.only(
+            top: Dimensions.width15,
+          ),
+          child: BoldText(
+            text: "Create New Playlist",
 
-              //
-              size: Dimensions.font16,
-            ),
+            //
+            size: Dimensions.font16,
           ),
-          SizedBox(
-            height: Dimensions.height53,
-          ),
-          Padding(
-            padding: EdgeInsets.only(
-                left: Dimensions.height30, right: Dimensions.height30),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Container(
-                  padding: EdgeInsets.all(2),
-                  height: Dimensions.height102 + 17,
-                  width: Dimensions.height102 + 8,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
-                    color: Colors.grey.withOpacity(.5),
-                  ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      SizedBox(
-                        height: Dimensions.height53 - 3,
-                        width: Dimensions.height53 - 3,
-                        child: Image.asset(AppIcons.upload),
-                      ),
-                      BoldText(
-                        text: "Upload cover",
-                        size: Dimensions.font16 - 4,
-                      )
-                    ],
-                  ),
+        ),
+        SizedBox(
+          height: Dimensions.height53,
+        ),
+        Padding(
+          padding: EdgeInsets.only(
+              left: Dimensions.height30, right: Dimensions.height30),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Container(
+                padding: EdgeInsets.all(2),
+                height: Dimensions.height102 + 17,
+                width: Dimensions.height102 + 8,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20),
+                  color: Colors.grey.withOpacity(.5),
                 ),
-                Column(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     SizedBox(
-                      height: Dimensions.height45 - 3,
-                      width: Dimensions.height217 - 15,
-                      child: TextFormField(
-                        decoration: InputDecoration(
-                          hintText: "Enter playlist name",
-                          contentPadding: EdgeInsets.only(
-                              left: Dimensions.width10,
-                              right: Dimensions.width10,
-                              bottom: 5,
-                              top: 5),
-                          border: OutlineInputBorder(
-                            borderSide: BorderSide(color: AppColors.blueColor),
-                            borderRadius:
-                                BorderRadius.circular(Dimensions.height53),
-                          ),
+                      height: Dimensions.height53 - 3,
+                      width: Dimensions.height53 - 3,
+                      child: Image.asset(AppIcons.upload),
+                    ),
+                    BoldText(
+                      text: "Upload cover",
+                      size: Dimensions.font16 - 4,
+                    )
+                  ],
+                ),
+              ),
+              Column(
+                children: [
+                  SizedBox(
+                    height: Dimensions.height45 - 3,
+                    width: Dimensions.height217 - 15,
+                    child: TextFormField(
+                      controller: _controller,
+                      decoration: InputDecoration(
+                        hintText: "Enter playlist name",
+                        contentPadding: EdgeInsets.only(
+                            left: Dimensions.width10,
+                            right: Dimensions.width10,
+                            bottom: 5,
+                            top: 5),
+                        border: OutlineInputBorder(
+                          borderSide: BorderSide(color: AppColors.blueColor),
+                          borderRadius:
+                              BorderRadius.circular(Dimensions.height53),
                         ),
                       ),
                     ),
-                    SizedBox(
-                      height: Dimensions.height25,
-                    ),
-                    Container(
+                  ),
+                  SizedBox(
+                    height: Dimensions.height25,
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      if (_controller.text.length > 5) {
+                        context
+                            .read<PlayListprovider>()
+                            .openPlaylist(playlistName: _controller.text);
+                        Get.back();
+
+                        // _controller.value.;
+                      } else {
+                        Get.snackbar("playlist", "Too short playlist name");
+                      }
+                    },
+                    child: Container(
                       height: Dimensions.height45 - 5,
                       width: Dimensions.height102 + 8,
                       decoration: BoxDecoration(
@@ -334,14 +366,16 @@ class CreateNewPlayListBottomSheet extends StatelessWidget {
                         ),
                       ),
                     ),
-                  ],
-                ),
-              ],
-            ),
+                  ),
+                ],
+              ),
+            ],
           ),
-          SizedBox(
-            height: Dimensions.height102,
-          ),
-        ],
-      );
+        ),
+        SizedBox(
+          height: Dimensions.height102,
+        ),
+      ],
+    );
+  }
 }

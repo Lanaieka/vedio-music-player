@@ -8,10 +8,14 @@ import '../../../widgets/regular_text.dart';
 
 class ArtistsSquareWigdet extends StatelessWidget {
   final String bgImg;
+  final String name;
+  final int countSongs;
 
   const ArtistsSquareWigdet({
     Key? key,
     required this.bgImg,
+    required this.name,
+    required this.countSongs,
   }) : super(key: key);
 
   @override
@@ -19,9 +23,10 @@ class ArtistsSquareWigdet extends StatelessWidget {
     return Column(
       children: [
         Container(
-          margin: EdgeInsets.only(left: 15, right: 15),
-          height: 102,
-          width: 102,
+          margin: EdgeInsets.only(
+              left: Dimensions.width15, right: Dimensions.width15),
+          height: Dimensions.height102,
+          width: Dimensions.height102,
           padding: EdgeInsets.all(Dimensions.height25),
           decoration: BoxDecoration(
               // borderRadius: BorderRadius.circular(15),
@@ -38,11 +43,11 @@ class ArtistsSquareWigdet extends StatelessWidget {
           height: Dimensions.height5,
         ),
         BigBoldText(
-          text: "Enna Vilai",
+          text: name,
           size: 12,
         ),
         RegularText(
-          text: "10 Songs",
+          text: " ${countSongs.toString()} songs",
           size: 10,
         ),
       ],

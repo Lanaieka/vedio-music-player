@@ -28,9 +28,13 @@ class ArtistsTab extends StatelessWidget {
       children: [
         ArtistsSquareWigdet(
           bgImg: AppImages.artists,
+          countSongs: 10,
+          name: "New",
         ),
         ArtistsSquareWigdet(
           bgImg: AppImages.artist2,
+          countSongs: 10,
+          name: "New",
         ),
       ],
     ));

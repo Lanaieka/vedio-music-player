@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:on_audio_query/on_audio_query.dart';
+import 'package:provider/provider.dart';
 import 'package:video_player_app/features/video-player-app/presentation/Utils/dimenstion.dart';
 import 'package:video_player_app/features/video-player-app/presentation/Utils/images.dart';
 import 'package:video_player_app/features/video-player-app/presentation/pages/music/player/black_music_player.dart';
 import 'package:video_player_app/features/video-player-app/presentation/pages/music/player/orange_music_player.dart';
+import 'package:video_player_app/features/video-player-app/presentation/pages/music/tabs/songs_tab.dart';
 import 'package:video_player_app/features/video-player-app/presentation/pages/music/widgets/songs_row_widget.dart';
 import 'package:video_player_app/features/video-player-app/presentation/widgets/big_custom_appbar.dart';
 import 'package:video_player_app/features/video-player-app/presentation/widgets/bold_text.dart';
 import 'package:video_player_app/features/video-player-app/presentation/widgets/regular_text.dart';
+import 'package:video_player_app/features/video-player-app/provider/playlist_provider.dart';
 
 class AlbumDetailScreen extends StatefulWidget {
   const AlbumDetailScreen({super.key});
@@ -17,6 +21,12 @@ class AlbumDetailScreen extends StatefulWidget {
 }
 
 class _AlbumDetailScreenState extends State<AlbumDetailScreen> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -104,12 +114,21 @@ class _AlbumDetailScreenState extends State<AlbumDetailScreen> {
           ),
           // * List of songs in the album
 
-          Expanded(
-              child: ListView.builder(
-                  itemCount: 5,
-                  itemBuilder: ((context, index) {
-                    return SongsRowWidget();
-                  })))
+          Expanded(child:
+              Consumer<PlayListprovider>(builder: (context, value, child) {
+            return ListView.builder(
+                itemCount: value.songs.length,
+                itemBuilder: ((context, index) {
+                  print("songs : ${value.songs.first}");
+                  return SongsRowWidget(
+                      songName: value.songs[0],
+                      subtitle: "subtitle",
+                      img: QueryArtworkWidget(
+                        id: 43434,
+                        type: ArtworkType.ARTIST,
+                      ));
+                }));
+          }))
         ],
       ),
     );

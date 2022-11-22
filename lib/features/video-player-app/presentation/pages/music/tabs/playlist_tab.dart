@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:video_player_app/features/video-player-app/presentation/Utils/colors.dart';
 import 'package:video_player_app/features/video-player-app/presentation/Utils/icons.dart';
 
@@ -6,6 +7,7 @@ import '../../../Utils/dimenstion.dart';
 import '../../../Utils/images.dart';
 import '../../../widgets/bold_text.dart';
 import '../../../widgets/regular_text.dart';
+import '../widgets/bottom_sheet.dart';
 
 class PlayListTab extends StatelessWidget {
   PlayListTab({
@@ -58,9 +60,24 @@ class PlayListTab extends StatelessWidget {
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              RegularText(
-                                text: titles[index],
-                                size: 16,
+                              GestureDetector(
+                                onTap: () {
+                                  index == 0
+                                      ? showModalBottomSheet(
+                                          shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.vertical(
+                                                      top:
+                                                          Radius.circular(50))),
+                                          context: context,
+                                          builder: ((context) =>
+                                              CreateNewPlayListBottomSheet()))
+                                      : null;
+                                },
+                                child: RegularText(
+                                  text: titles[index],
+                                  size: 16,
+                                ),
                               ),
                             ],
                           ),

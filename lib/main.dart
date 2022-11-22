@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
+import 'package:provider/provider.dart';
 import 'package:video_player_app/features/video-player-app/presentation/pages/home/home_screen.dart';
 import 'package:video_player_app/features/video-player-app/presentation/pages/music/music_home_page.dart';
 import 'package:video_player_app/features/video-player-app/presentation/pages/music/player/orange_music_player.dart';
 import 'package:video_player_app/features/video-player-app/presentation/pages/navbar_home.dart';
 import 'package:video_player_app/features/video-player-app/presentation/pages/photos/sectionB/photos_B.dart';
 import 'package:video_player_app/features/video-player-app/presentation/pages/theme/theme_page.dart';
+import 'package:video_player_app/features/video-player-app/provider/playlist_provider.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(MultiProvider(providers: [
+    ChangeNotifierProvider(create: (context) => PlayListprovider()),
+  ], child: const MyApp()));
 }
 
 class MyApp extends StatelessWidget {

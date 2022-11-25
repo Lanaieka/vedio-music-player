@@ -8,10 +8,16 @@ import 'package:video_player_app/features/video-player-app/presentation/pages/na
 import 'package:video_player_app/features/video-player-app/presentation/pages/photos/sectionB/photos_B.dart';
 import 'package:video_player_app/features/video-player-app/presentation/pages/theme/theme_page.dart';
 import 'package:video_player_app/features/video-player-app/provider/playlist_provider.dart';
+import 'package:video_player_app/features/video-player-app/provider/recent_songs_provider.dart';
 
 void main() {
   runApp(MultiProvider(providers: [
-    ChangeNotifierProvider(create: (context) => PlayListprovider()),
+    ChangeNotifierProvider(
+      create: (context) => PlayListprovider(),
+    ),
+    ChangeNotifierProvider(
+      create: (context) => RecentPlayedProvider(),
+    ),
   ], child: const MyApp()));
 }
 

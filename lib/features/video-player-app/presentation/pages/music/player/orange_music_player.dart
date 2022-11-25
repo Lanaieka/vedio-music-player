@@ -6,12 +6,14 @@ import 'package:flutter_share/flutter_share.dart';
 import 'package:get/get.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:on_audio_query/on_audio_query.dart';
+import 'package:provider/provider.dart';
 
 import 'package:video_player_app/features/video-player-app/presentation/Utils/dimenstion.dart';
 import 'package:video_player_app/features/video-player-app/presentation/Utils/icons.dart';
 import 'package:video_player_app/features/video-player-app/presentation/widgets/big_bold_text.dart';
 import 'package:video_player_app/features/video-player-app/presentation/widgets/bold_text.dart';
 import 'package:video_player_app/features/video-player-app/presentation/widgets/regular_text.dart';
+import 'package:video_player_app/features/video-player-app/provider/recent_songs_provider.dart';
 
 class OrangeMusicPlayer extends StatefulWidget {
   final List<SongModel> songs;
@@ -46,6 +48,7 @@ class _OrangeMusicPlayerState extends State<OrangeMusicPlayer> {
   @override
   void initState() {
     // TODO: implement initState
+
     super.initState();
     requestStoragePermission();
     setState(() {
@@ -61,10 +64,16 @@ class _OrangeMusicPlayerState extends State<OrangeMusicPlayer> {
     // });
   }
 
-  void _playMusic({int? index, String? ur}) async {
+  void _playMusic({int? index, String? ur, required SongModel song}) async {
     if (ur != null) {
       try {
         if (isPlayer) {
+          //your code goes here
+
+          Future.delayed(Duration(milliseconds: 100), () {
+            context.read<RecentPlayedProvider>().addRecentSongs(song: song);
+          });
+
           String? uri = ur;
           assetsAudioPlayer.open(Audio.file(uri), showNotification: true);
           assetsAudioPlayer.onReadyToPlay.listen((event) {
@@ -148,7 +157,8 @@ class _OrangeMusicPlayerState extends State<OrangeMusicPlayer> {
           } else {
             String? uri = items.data![audioIndex].uri;
 
-            _playMusic(ur: uri, index: audioIndex);
+            _playMusic(
+                ur: uri, index: audioIndex, song: items.data![audioIndex]);
           }
 
           return Scaffold(

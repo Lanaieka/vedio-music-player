@@ -1,6 +1,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:on_audio_query/on_audio_query.dart';
+import 'package:provider/provider.dart';
+
 import 'package:video_player_app/features/video-player-app/presentation/Utils/colors.dart';
 import 'package:video_player_app/features/video-player-app/presentation/Utils/dimenstion.dart';
 import 'package:video_player_app/features/video-player-app/presentation/Utils/images.dart';
@@ -11,6 +13,7 @@ import 'package:video_player_app/features/video-player-app/presentation/pages/mu
 import 'package:video_player_app/features/video-player-app/presentation/widgets/big_bold_text.dart';
 import 'package:video_player_app/features/video-player-app/presentation/widgets/bold_text.dart';
 import 'package:video_player_app/features/video-player-app/presentation/widgets/regular_text.dart';
+import 'package:video_player_app/features/video-player-app/provider/recent_songs_provider.dart';
 
 class MusicHomePage extends StatefulWidget {
   const MusicHomePage({super.key});
@@ -129,18 +132,37 @@ class _MusicHomePageState extends State<MusicHomePage> {
             ),
 
             // * songs square widget
-            Padding(
-              padding: EdgeInsets.only(
-                  left: Dimensions.width15, right: Dimensions.width15),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  MusicSquareWigdet(),
-                  MusicSquareWigdet(),
-                  MusicSquareWigdet(),
-                ],
-              ),
+
+            Container(
+              height: 120,
+              width: 400,
+              child: Consumer<RecentPlayedProvider>(
+                  builder: (context, value, child) {
+                return ListView.builder(
+                    itemCount: value.recentPlayerSongs.length,
+                    scrollDirection: Axis.horizontal,
+                    itemBuilder: ((context, index) {
+                      return Padding(
+                        padding: const EdgeInsets.only(left: 8.0, right: 8),
+                        child: MusicSquareWigdet(
+                          song: value.recentPlayerSongs[index],
+                        ),
+                      );
+                    }));
+              }),
             ),
+            // Padding(
+            //   padding: EdgeInsets.only(
+            //       left: Dimensions.width15, right: Dimensions.width15),
+            //   child: Row(
+            //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //     children: [
+            //       MusicSquareWigdet(),
+            //       MusicSquareWigdet(),
+            //       MusicSquareWigdet(),
+            //     ],
+            //   ),
+            // ),
             SizedBox(
               height: Dimensions.height15,
             ),
@@ -208,8 +230,11 @@ class _MusicHomePageState extends State<MusicHomePage> {
 }
 
 class MusicSquareWigdet extends StatelessWidget {
+  final SongModel song;
+
   const MusicSquareWigdet({
     Key? key,
+    required this.song,
   }) : super(key: key);
 
   @override
@@ -220,20 +245,26 @@ class MusicSquareWigdet extends StatelessWidget {
           height: Dimensions.height102 - 2,
           width: Dimensions.height102 + 8,
           decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-              // color: Colors.black,
-              image: DecorationImage(
-                  fit: BoxFit.cover, image: AssetImage(AppImages.singer1))),
+            borderRadius: BorderRadius.circular(10),
+            // color: Colors.black,
+            // image: DecorationImage(
+            // fit: BoxFit.cover, image: AssetImage(AppImages.singer1))),
+          ),
+          child: QueryArtworkWidget(
+            id: song.id,
+            type: ArtworkType.AUDIO,
+          ),
         ),
         SizedBox(
           height: Dimensions.height5,
         ),
         BigBoldText(
-          text: "Enna Vilai",
+          text: song.title,
           size: Dimensions.height10 + 4,
+          //
         ),
         RegularText(
-          text: "AR Rehman",
+          text: song.displayName,
           size: Dimensions.height10 + 2,
         ),
       ],

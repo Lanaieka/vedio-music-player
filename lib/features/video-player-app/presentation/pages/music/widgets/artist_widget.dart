@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 import '../../../Utils/dimenstion.dart';
 import '../../../Utils/icons.dart';
-import '../../../Utils/images.dart';
 import '../../../widgets/big_bold_text.dart';
 import '../../../widgets/regular_text.dart';
 

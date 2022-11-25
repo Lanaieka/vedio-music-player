@@ -7,15 +7,15 @@ import 'package:video_player_app/features/video-player-app/presentation/pages/mu
 import '../model/playlist_model.dart';
 
 class PlayListprovider extends ChangeNotifier {
-  List<PlaylistProviderModel> _playLists = [];
+  List<PlayListModelClass> _playLists = [];
   List<String> _songs = ["Dill Nahi", "Dill Hare", "Yoyo", "Raste"];
-  List<PlaylistProviderModel> get playListSongs => _playLists;
+  List<PlayListModelClass> get playListSongs => _playLists;
   List<String> get songs => _songs;
 
   openPlaylist({required String playlistName, File? playImage}) {
     // _playListsongs.add(PlaylistModel())
     _playLists.add(
-      PlaylistProviderModel(
+      PlayListModelClass(
           playName: playlistName, playlistImg: playImage, playlist: []),
     );
   }

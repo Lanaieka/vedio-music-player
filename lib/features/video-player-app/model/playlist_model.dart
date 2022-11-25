@@ -2,11 +2,11 @@ import 'dart:io';
 
 import 'package:on_audio_query/on_audio_query.dart';
 
-class PlaylistProviderModel {
+class PlayListModelClass {
   String playName;
 
   List<SongModel> playlist;
   File? playlistImg;
-  PlaylistProviderModel(
+  PlayListModelClass(
       {required this.playName, required this.playlist, this.playlistImg});
 }

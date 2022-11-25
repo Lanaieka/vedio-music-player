@@ -120,13 +120,14 @@ class _AlbumDetailScreenState extends State<AlbumDetailScreen> {
                 itemCount: value.songs.length,
                 itemBuilder: ((context, index) {
                   print("songs : ${value.songs.first}");
-                  return SongsRowWidget(
-                      songName: value.songs[0],
-                      subtitle: "subtitle",
-                      img: QueryArtworkWidget(
-                        id: 43434,
-                        type: ArtworkType.ARTIST,
-                      ));
+                  return Container();
+                  // SongsRowWidget(
+                  //     songName: value.songs[0],
+                  //     subtitle: "subtitle",
+                  //     img: QueryArtworkWidget(
+                  //       id: 43434,
+                  //       type: ArtworkType.ARTIST,
+                  //     ));
                 }));
           }))
         ],
